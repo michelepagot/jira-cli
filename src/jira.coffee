@@ -136,7 +136,8 @@ addItem = (project)->
                 addIssueCallback = (type)->
                     jiraCli.addIssue summary, description,
                         issueTypes[type - 1].id, project
-                dutils.ask "Type ", allowedTypes, addIssueCallback, allowedTypes
+                dutils.ask "Type ", allowedTypes,
+                addIssueCallback, allowedTypes
 
 # ## Main entry point ##
 #
@@ -187,7 +188,11 @@ if require.main is module
         return
     args = argv.argv
 
-    configFilePath = path.join process.env.HOME, '.jiraclirc.json'
+    if process.env.HOME
+        configFilePath = path.join process.env.HOME, '.jiraclirc.json'
+    else
+        console.log "I'm an HOMEless"
+        return
     unless fs.existsSync configFilePath
         createConfigFile configFilePath
         return
